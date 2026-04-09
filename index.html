@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Hub / Vision Strategica 2026-2029</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #020710;
+            --bg-card: #0d1117;
+            --bg-alt: #161b22;
+            --accent: #89FF00;
+            --accent-dim: rgba(137,255,0,0.15);
+            --accent-glow: rgba(137,255,0,0.06);
+            --text: #f0f6fc;
+            --text-dim: #8b949e;
+            --text-mid: #c9d1d9;
+            --border: rgba(137,255,0,0.12);
+            --red: #ff6b6b;
+            --orange: #ffa94d;
+            --blue: #74c0fc;
+            --purple: #b197fc;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow:hidden;height:100vh;}
+
+        /* NAV */
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(2,7,16,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1.5rem;height:50px;display:flex;align-items:center;}
+        .nav-inner{max-width:1400px;margin:0 auto;width:100%;display:flex;align-items:center;gap:1rem;}
+        .logo{font-family:'Space Mono',monospace;font-weight:700;font-size:0.9rem;color:var(--accent);letter-spacing:-0.5px;flex-shrink:0;}
+        .nav-links{display:flex;gap:2px;list-style:none;flex-wrap:wrap;margin-left:1rem;}
+        .nav-links button{background:none;border:1px solid transparent;color:var(--text-dim);font-family:'Inter',sans-serif;font-size:0.68rem;padding:0.3rem 0.6rem;border-radius:5px;cursor:pointer;transition:all 0.2s;font-weight:500;white-space:nowrap;}
+        .nav-links button:hover,.nav-links button.active{color:var(--accent);border-color:var(--accent);background:var(--accent-dim);}
+        .slide-counter{margin-left:auto;font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--text-dim);flex-shrink:0;}
+
+        /* SLIDES */
+        .slides-container{height:100vh;overflow:hidden;padding-top:50px;}
+        .slide{display:none;height:calc(100vh - 50px);overflow-y:auto;padding:2.5rem 3rem;position:relative;}
+        .slide.active{display:block;}
+        .slide-inner{max-width:1200px;margin:0 auto;height:100%;}
+
+        /* TYPOGRAPHY */
+        .section-label{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:3px;margin-bottom:0.4rem;}
+        h1{font-family:'Space Mono',monospace;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.1;margin-bottom:1rem;}
+        h1 .accent{color:var(--accent);}
+        h2{font-family:'Space Mono',monospace;font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:700;margin-bottom:0.75rem;line-height:1.2;}
+        h3{font-family:'Space Mono',monospace;font-size:0.9rem;font-weight:700;color:var(--accent);margin-bottom:0.5rem;}
+        h4{font-family:'Space Mono',monospace;font-size:0.8rem;font-weight:700;margin-bottom:0.4rem;}
+        p{color:var(--text-mid);margin-bottom:0.75rem;max-width:700px;font-size:0.88rem;line-height:1.5;}
+        p.wide{max-width:100%;}
+
+        /* LAYOUT */
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+        .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;}
+        .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem;}
+        .flex-center{display:flex;align-items:center;justify-content:center;}
+        .mt-1{margin-top:1rem;}.mt-2{margin-top:1.5rem;}.mt-3{margin-top:2rem;}
+
+        /* CARDS */
+        .card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;}
+        .card:hover{border-color:rgba(137,255,0,0.3);}
+        .card h3{margin-bottom:0.4rem;}
+        .card p{font-size:0.82rem;color:var(--text-dim);margin-bottom:0;}
+
+        /* TABLES */
+        table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:0.75rem 0;}
+        thead th{text-align:left;padding:0.5rem 0.75rem;background:var(--bg-alt);color:var(--accent);font-family:'Space Mono',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);}
+        tbody td{padding:0.5rem 0.75rem;border-bottom:1px solid rgba(137,255,0,0.05);color:var(--text-mid);}
+        .hl{color:var(--accent);font-weight:600;}
+        .total td{color:var(--accent);font-weight:700;font-family:'Space Mono',monospace;}
+
+        /* TAGS */
+        .tag{display:inline-block;padding:0.15rem 0.5rem;background:var(--accent-dim);color:var(--accent);font-size:0.65rem;font-family:'Space Mono',monospace;border-radius:4px;font-weight:700;}
+        .tag.blue{background:rgba(116,192,252,0.15);color:var(--blue);}
+        .tag.purple{background:rgba(177,151,252,0.15);color:var(--purple);}
+        .tag.orange{background:rgba(255,169,77,0.15);color:var(--orange);}
+
+        /* FEATURE LIST */
+        .fl{list-style:none;padding:0;}
+        .fl li{padding:0.3rem 0;font-size:0.82rem;color:var(--text-mid);padding-left:1.2rem;position:relative;}
+        .fl li::before{content:'>';position:absolute;left:0;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700;font-size:0.8rem;}
+
+        /* PRICING */
+        .pricing-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;position:relative;overflow:hidden;}
+        .pricing-card.featured{border-color:var(--accent);background:linear-gradient(180deg,rgba(137,255,0,0.04),var(--bg-card) 50%);}
+        .pricing-card .badge{position:absolute;top:0;right:0;background:var(--accent);color:var(--bg);font-size:0.6rem;font-weight:700;padding:0.2rem 0.8rem;border-radius:0 12px 0 10px;text-transform:uppercase;letter-spacing:1px;}
+        .plan-name{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;}
+        .plan-price{font-family:'Space Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--accent);}
+        .plan-period{font-size:0.75rem;color:var(--text-dim);margin-bottom:1rem;}
+
+        /* ROADMAP TIMELINE */
+        .rm-track{display:flex;align-items:stretch;margin:1.5rem 0;position:relative;min-height:120px;}
+        .rm-phase{flex:1;padding:1rem 1.25rem;border-radius:12px;position:relative;display:flex;flex-direction:column;}
+        .rm-phase.short{background:rgba(137,255,0,0.08);border:1px solid rgba(137,255,0,0.25);}
+        .rm-phase.mid{background:rgba(116,192,252,0.08);border:1px solid rgba(116,192,252,0.25);margin:0 0.75rem;}
+        .rm-phase.long{background:rgba(177,151,252,0.08);border:1px solid rgba(177,151,252,0.25);}
+        .rm-label{font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:0.4rem;}
+        .rm-phase.short .rm-label{color:var(--accent);}
+        .rm-phase.mid .rm-label{color:var(--blue);}
+        .rm-phase.long .rm-label{color:var(--purple);}
+        .rm-phase h4{font-size:0.95rem;margin-bottom:0.4rem;}
+        .rm-phase ul{list-style:none;padding:0;}
+        .rm-phase ul li{font-size:0.78rem;color:var(--text-mid);padding:0.15rem 0;}
+
+        /* GANTT */
+        .gantt{margin:1rem 0;overflow-x:auto;}
+        .gantt-grid{display:grid;grid-template-columns:180px repeat(8,1fr);min-width:750px;}
+        .gantt-hd{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;padding:0.4rem 0.2rem;text-align:center;border-bottom:1px solid var(--border);}
+        .gantt-hd:first-child{text-align:left;color:var(--accent);}
+        .gantt-row{display:contents;}
+        .gantt-row > *{padding:0.3rem 0.2rem;border-bottom:1px solid rgba(137,255,0,0.03);min-height:28px;display:flex;align-items:center;}
+        .gantt-task{font-size:0.75rem;color:var(--text-mid);white-space:nowrap;}
+        .gantt-task.cat{color:var(--accent);font-weight:600;font-size:0.72rem;}
+        .gantt-cell{position:relative;}
+        .gb{position:absolute;height:16px;border-radius:3px;top:50%;transform:translateY(-50%);}
+        .gb.g{background:var(--accent);}.gb.b{background:var(--blue);}.gb.o{background:var(--orange);}.gb.p{background:var(--purple);}
+
+        /* TASK BOARD */
+        .task-board{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+        .task-col{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+        .task-col h3{font-size:0.9rem;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;}
+        .task-item{padding:0.6rem 0.75rem;background:var(--bg-alt);border-radius:8px;margin-bottom:0.5rem;font-size:0.8rem;color:var(--text-mid);border-left:3px solid var(--border);}
+        .task-item.prio-high{border-left-color:var(--red);}
+        .task-item.prio-mid{border-left-color:var(--orange);}
+        .task-item.prio-low{border-left-color:var(--blue);}
+        .task-item .task-tag{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:block;margin-top:0.2rem;}
+
+        /* STAT */
+        .stat{text-align:center;padding:1rem;}
+        .stat-num{font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--accent);}
+        .stat-label{font-size:0.72rem;color:var(--text-dim);margin-top:0.15rem;}
+
+        /* DONUT */
+        .chart-wrap{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+        .legend{display:flex;flex-direction:column;gap:0.4rem;}
+        .legend-item{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:var(--text-mid);}
+        .legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+        .legend-val{font-family:'Space Mono',monospace;font-weight:700;color:var(--text);margin-left:auto;padding-left:0.75rem;}
+
+        /* BAR CHART */
+        .bar-row{display:flex;align-items:center;margin-bottom:0.4rem;gap:0.75rem;}
+        .bar-label{width:160px;font-size:0.72rem;color:var(--text-dim);text-align:right;flex-shrink:0;}
+        .bar-track{flex:1;height:22px;background:var(--bg-alt);border-radius:5px;overflow:hidden;}
+        .bar-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:0.5rem;font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;color:var(--bg);}
+
+        /* STACKED BAR */
+        .stacked{display:flex;height:32px;border-radius:8px;overflow:hidden;margin:0.5rem 0;}
+        .stacked-seg{display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;color:var(--bg);}
+
+        /* WATERFALL */
+        .wf{display:flex;align-items:flex-end;gap:0.5rem;height:200px;border-bottom:2px solid var(--border);padding:0 0.5rem;margin:1rem 0;}
+        .wf-col{flex:1;display:flex;flex-direction:column;align-items:center;}
+        .wf-bar{width:100%;max-width:60px;border-radius:5px 5px 0 0;position:relative;}
+        .wf-val{font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;position:absolute;top:-1.2rem;left:50%;transform:translateX(-50%);white-space:nowrap;}
+        .wf-lbl{font-size:0.62rem;color:var(--text-dim);text-align:center;margin-top:0.3rem;line-height:1.2;}
+
+        /* FUNNEL */
+        .vf{max-width:400px;}
+        .vf-step{display:flex;align-items:center;justify-content:center;padding:0.7rem;text-align:center;color:var(--bg);font-weight:600;font-size:0.8rem;border-radius:6px;margin-bottom:3px;}
+        .vf-num{font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;}
+        .vf-lbl{font-size:0.68rem;font-weight:400;opacity:0.8;margin-left:0.3rem;}
+        .vf-pct{text-align:center;font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--accent);margin:1px 0;}
+
+        /* DATA COMMONS */
+        .flow-diagram{display:flex;align-items:center;gap:0;margin:1.5rem 0;flex-wrap:wrap;}
+        .flow-box{padding:1rem 1.25rem;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;text-align:center;min-width:140px;}
+        .flow-box h4{font-size:0.78rem;margin-bottom:0.2rem;}
+        .flow-box p{font-size:0.7rem;color:var(--text-dim);margin:0;max-width:100%;}
+        .flow-arrow{color:var(--accent);font-size:1.2rem;padding:0 0.3rem;flex-shrink:0;}
+
+        /* KEYBOARD NAV HINT */
+        .nav-hint{position:fixed;bottom:1rem;right:1.5rem;font-size:0.65rem;color:var(--text-dim);font-family:'Space Mono',monospace;opacity:0.5;}
+        .nav-hint kbd{background:var(--bg-alt);border:1px solid var(--border);padding:0.1rem 0.4rem;border-radius:3px;}
+
+        /* EVENT BADGE */
+        .event-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--accent);color:var(--bg);padding:0.5rem 1rem;border-radius:8px;font-weight:700;font-size:0.85rem;margin:0.75rem 0;}
+        .event-badge .event-date{font-family:'Space Mono',monospace;}
+
+        /* CODE BLOCK */
+        .code-block{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;font-family:'Space Mono',monospace;font-size:0.72rem;line-height:1.7;color:var(--text-mid);overflow-x:auto;margin:0.75rem 0;}
+        .c-cmt{color:var(--text-dim);}.c-kw{color:var(--accent);}.c-str{color:var(--orange);}.c-num{color:var(--blue);}
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <div class="logo">GREEN HUB</div>
+        <div class="nav-links" id="navLinks"></div>
+        <div class="slide-counter" id="slideCounter">1 / 12</div>
+    </div>
+</nav>
+
+<div class="slides-container">
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<div class="slide active" data-title="Cover">
+    <div class="slide-inner" style="display:flex;flex-direction:column;justify-content:center;">
+        <div class="section-label">Vision Strategica 2026-2029</div>
+        <h1>La piattaforma ESG<br>per le <span class="accent">PMI italiane</span></h1>
+        <p style="font-size:1rem;max-width:600px;">Da ecosistema di servizi a fonte di riferimento sui dati ESG delle piccole e medie imprese. Tre fasi, una visione.</p>
+        <div class="event-badge">
+            <span>&#9889;</span>
+            <span>ESG ON</span>
+            <span class="event-date">22 Aprile 2026</span>
+            <span>Lancio piattaforma, Camp e BizTrek</span>
+        </div>
+        <div class="grid-4 mt-3" style="max-width:800px;">
+            <div class="stat"><div class="stat-num">100K</div><div class="stat-label">Revenue target 2026</div></div>
+            <div class="stat"><div class="stat-num">3-5K</div><div class="stat-label">Utenti FREE target</div></div>
+            <div class="stat"><div class="stat-num">3</div><div class="stat-label">Piani: FREE/PLUS/PRO</div></div>
+            <div class="stat"><div class="stat-num">2029</div><div class="stat-label">Data Company ESG</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 2: ROADMAP ==================== -->
+<div class="slide" data-title="Roadmap">
+    <div class="slide-inner">
+        <div class="section-label">Visione su 3 orizzonti</div>
+        <h2>Roadmap 2026-2029</h2>
+        <div class="rm-track">
+            <div class="rm-phase short">
+                <div class="rm-label">Breve / 2026</div>
+                <h4>Lancio e acquisizione</h4>
+                <ul>
+                    <li><strong>22 Apr:</strong> ESG ON, lancio piattaforma</li>
+                    <li>Presentazione Camp e BizTrek</li>
+                    <li>3 piani: FREE (beta) / PLUS / PRO</li>
+                    <li>Primi 6 mesi: solo FREE con tutte le feature</li>
+                    <li>Acquisizione 3-5K utenti</li>
+                    <li>2 BizTrek, 2 Camp</li>
+                </ul>
+            </div>
+            <div class="rm-phase mid">
+                <div class="rm-label">Medio / 2027</div>
+                <h4>Tool per le aziende</h4>
+                <ul>
+                    <li>Primi tool ESG operativi</li>
+                    <li>AI Copilot, checklist compliance</li>
+                    <li>Matching bandi automatico</li>
+                    <li>Attivazione piani PLUS e PRO</li>
+                    <li>Scaling BizTrek (3-4 edizioni)</li>
+                </ul>
+            </div>
+            <div class="rm-phase long">
+                <div class="rm-label">Lungo / 2028-2029</div>
+                <h4>Data Company ESG</h4>
+                <ul>
+                    <li>Licenza Data Commons per universita' ed enti</li>
+                    <li>Pubblicazioni scientifiche e media</li>
+                    <li>Modello business per licenze commerciali</li>
+                    <li>API dati per banche e assicurazioni</li>
+                    <li>Revenue dati: 200-500K+/anno</li>
+                </ul>
+            </div>
+        </div>
+        <!-- GANTT -->
+        <h3 class="mt-2">Gantt operativo</h3>
+        <div class="gantt">
+            <div class="gantt-grid">
+                <div class="gantt-hd">Attivita'</div>
+                <div class="gantt-hd">Q2 '26</div><div class="gantt-hd">Q3 '26</div><div class="gantt-hd">Q4 '26</div>
+                <div class="gantt-hd">H1 '27</div><div class="gantt-hd">H2 '27</div>
+                <div class="gantt-hd">H1 '28</div><div class="gantt-hd">H2 '28</div><div class="gantt-hd">2029</div>
+
+                <div class="gantt-row"><div class="gantt-task cat" style="color:var(--accent)">LANCIO</div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">ESG ON (22 apr)</div><div class="gantt-cell"><div class="gb g" style="left:10%;width:15%;"></div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Acquisizione utenti</div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;opacity:0.5"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;opacity:0.5"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;opacity:0.5"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;opacity:0.3"></div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Piani PLUS/PRO attivi</div><div></div><div></div><div class="gantt-cell"><div class="gb g" style="left:50%;right:0;"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;opacity:0.4"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;opacity:0.4"></div></div><div class="gantt-cell"><div class="gb g" style="left:0;right:0;opacity:0.4"></div></div></div>
+
+                <div class="gantt-row"><div class="gantt-task cat" style="color:var(--blue)">EXPERIENCES</div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">BizTrek 1 (Brussels)</div><div class="gantt-cell"><div class="gb b" style="left:20%;right:0;"></div></div><div class="gantt-cell"><div class="gb b" style="left:0;width:40%;"></div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">BizTrek 2</div><div></div><div></div><div class="gantt-cell"><div class="gb b" style="left:0;right:0;opacity:0.7"></div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Camp 1 (ott.)</div><div></div><div></div><div class="gantt-cell"><div class="gb o" style="left:30%;right:20%;"></div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Camp 2 (exec Q1 '27)</div><div></div><div></div><div class="gantt-cell"><div class="gb o" style="left:60%;right:0;opacity:0.4"></div></div><div class="gantt-cell"><div class="gb o" style="left:0;width:40%;"></div></div><div></div><div></div><div></div><div></div></div>
+
+                <div class="gantt-row"><div class="gantt-task cat" style="color:var(--orange)">TOOL</div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">AI Copilot + Checklist</div><div></div><div></div><div></div><div class="gantt-cell"><div class="gb o" style="left:0;right:0;"></div></div><div class="gantt-cell"><div class="gb o" style="left:0;right:0;"></div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Matching bandi</div><div></div><div></div><div></div><div></div><div class="gantt-cell"><div class="gb o" style="left:0;right:0;opacity:0.6"></div></div><div class="gantt-cell"><div class="gb o" style="left:0;right:0;opacity:0.6"></div></div><div></div><div></div></div>
+
+                <div class="gantt-row"><div class="gantt-task cat" style="color:var(--purple)">DATI</div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Raccolta dati</div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.3"></div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Data Commons + API</div><div></div><div></div><div></div><div></div><div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;"></div></div></div>
+                <div class="gantt-row"><div class="gantt-task">Licenze commerciali</div><div></div><div></div><div></div><div></div><div></div><div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;opacity:0.7"></div></div><div class="gantt-cell"><div class="gb p" style="left:0;right:0;"></div></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 3: PIATTAFORMA ==================== -->
+<div class="slide" data-title="Piattaforma">
+    <div class="slide-inner">
+        <div class="section-label">Fase 1: Breve termine</div>
+        <h2>La piattaforma oggi</h2>
+        <p class="wide">Dashboard ESG con 3 pilastri: Experiences (BizTrek + Camp), Infotainment (contenuti), Tools (in arrivo). Lancio ufficiale a ESG ON il 22 aprile 2026.</p>
+        <div class="grid-3 mt-2">
+            <div class="card">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#127759;</div>
+                <h3>Experiences</h3>
+                <p>BizTrek (viaggi imprenditoriali) e Camp (talent acquisition). Asset premium venduti come add-on. Scontati per utenti PRO.</p>
+            </div>
+            <div class="card">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#128218;</div>
+                <h3>Infotainment</h3>
+                <p>Articoli, video, guide ESG curate. Layer gratuito per retention. Lead magnet per conversione. ESG Score come hook di iscrizione.</p>
+            </div>
+            <div class="card">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#9881;</div>
+                <h3>Tools / Actions</h3>
+                <p>AI Copilot, checklist compliance, matching bandi. In fase di definizione per il medio termine (2027).</p>
+            </div>
+        </div>
+        <h3 class="mt-3">Strategia primi 6 mesi: solo FREE (beta)</h3>
+        <div class="card" style="max-width:700px;border-color:var(--accent);">
+            <p class="wide" style="margin:0;"><strong style="color:var(--accent);">Il piano FREE include tutte le feature del PRO.</strong> Gli altri piani sono visibili ma non acquistabili. Scriviamo che e' in beta e che non tutti i contenuti sono disponibili. Con il FREE si possono acquistare ticket Camp e BizTrek a <strong>prezzo scontato</strong>.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 4: ABBONAMENTI ==================== -->
+<div class="slide" data-title="Abbonamenti">
+    <div class="slide-inner">
+        <div class="section-label">Fase 1: Breve termine</div>
+        <h2>I 3 piani</h2>
+        <div class="grid-3 mt-2">
+            <div class="pricing-card featured">
+                <div class="badge">ATTIVO IN BETA</div>
+                <div class="plan-name">FREE</div>
+                <div class="plan-price">&euro;0</div>
+                <div class="plan-period">Per sempre</div>
+                <ul class="fl">
+                    <li>Dashboard completa</li>
+                    <li>Infotainment: articoli, video, guide</li>
+                    <li>ESG Score (assessment)</li>
+                    <li>Newsletter settimanale</li>
+                    <li>Community</li>
+                    <li><strong>In beta: tutte le feature PRO incluse</strong></li>
+                    <li><strong>Prezzo scontato su Camp e BizTrek</strong></li>
+                </ul>
+            </div>
+            <div class="pricing-card" style="opacity:0.6;">
+                <div class="badge" style="background:var(--text-dim);">COMING SOON</div>
+                <div class="plan-name">PLUS</div>
+                <div class="plan-price">&euro;19</div>
+                <div class="plan-period">al mese</div>
+                <ul class="fl">
+                    <li>Tutto FREE, piu':</li>
+                    <li>Contenuti premium</li>
+                    <li>Checklist compliance guidate</li>
+                    <li>Percorso formativo strutturato</li>
+                    <li>AI Copilot (base)</li>
+                    <li>Report ESG mensile</li>
+                    <li>Community attiva</li>
+                </ul>
+            </div>
+            <div class="pricing-card" style="opacity:0.6;">
+                <div class="badge" style="background:var(--text-dim);">COMING SOON</div>
+                <div class="plan-name">PRO</div>
+                <div class="plan-price">&euro;899</div>
+                <div class="plan-period">all'anno</div>
+                <ul class="fl">
+                    <li>Tutto PLUS, piu':</li>
+                    <li><strong>Webinar esclusivi imprenditori</strong></li>
+                    <li><strong>Networking imprenditori PRO</strong></li>
+                    <li><strong>Sconti su Camp e BizTrek</strong></li>
+                    <li>AI Copilot avanzato</li>
+                    <li>Matching bandi automatico</li>
+                    <li>Benchmark settoriale</li>
+                    <li>Call trimestrale con il team</li>
+                </ul>
+            </div>
+        </div>
+        <div class="code-block mt-2" style="max-width:600px;">
+            <span class="c-cmt">// Logica primi 6 mesi</span><br>
+            <span class="c-kw">FREE</span> = tutte le feature PRO, beta, non tutti i contenuti<br>
+            <span class="c-kw">PLUS/PRO</span> = visibili, <span class="c-str">non acquistabili</span><br>
+            <span class="c-kw">Camp/BizTrek</span> = acquistabili da FREE a <span class="c-num">prezzo scontato</span>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 5: BIZTREK ==================== -->
+<div class="slide" data-title="BizTrek">
+    <div class="slide-inner">
+        <div class="section-label">Fase 1: Experiences</div>
+        <h2>BizTrek: viaggi imprenditoriali</h2>
+        <div class="grid-2">
+            <div>
+                <p>Viaggi immersivi in hub europei. 10 posti per edizione, contatto con istituzioni EU, aziende innovative, opportunita' di finanziamento.</p>
+                <h3 class="mt-2">Cosa include</h3>
+                <ul class="fl">
+                    <li>Viaggio organizzato (Brussels, ecc.)</li>
+                    <li>Incontri con istituzioni EU e stakeholder</li>
+                    <li>Pitch deck per ogni partecipante</li>
+                    <li>Webinar preparatorio pre-viaggio</li>
+                    <li>Documentazione bandi e opportunita'</li>
+                    <li>Call follow-up post-viaggio</li>
+                    <li>Community esclusiva BizTrek</li>
+                </ul>
+                <h3 class="mt-2">Piano 2026</h3>
+                <table>
+                    <thead><tr><th>Edizione</th><th>Quando</th><th>Revenue</th></tr></thead>
+                    <tbody>
+                        <tr><td>BizTrek 1 (Brussels)</td><td>Q2-Q3 2026</td><td class="hl">25.000 &euro;</td></tr>
+                        <tr><td>BizTrek 2 (TBD)</td><td>Q4 2026</td><td class="hl">25.000 &euro;</td></tr>
+                        <tr class="total"><td>Totale</td><td></td><td>50.000 &euro;</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <div class="grid-2" style="gap:1rem;">
+                    <div class="card" style="text-align:center;"><div class="stat-num">2.500 &euro;</div><div class="stat-label">Per partecipante</div></div>
+                    <div class="card" style="text-align:center;"><div class="stat-num">10</div><div class="stat-label">Posti per edizione</div></div>
+                </div>
+                <div class="card mt-2" style="border-color:var(--orange);">
+                    <h3 style="color:var(--orange);">&#9888; Numero limitato</h3>
+                    <p>Nel banner e nella pagina deve essere visibile il numero di posti rimanenti. Ideale: contatore automatico che si aggiorna man mano che i ticket vengono venduti.</p>
+                </div>
+                <h3 class="mt-2">Funnel vendita BizTrek</h3>
+                <div class="vf">
+                    <div class="vf-step" style="width:100%;background:var(--accent);"><span class="vf-num">3-5K</span><span class="vf-lbl">iscritti piattaforma</span></div>
+                    <div class="vf-pct">5-10%</div>
+                    <div class="vf-step" style="width:70%;background:var(--blue);"><span class="vf-num">150-500</span><span class="vf-lbl">interessati</span></div>
+                    <div class="vf-pct">20-30%</div>
+                    <div class="vf-step" style="width:45%;background:var(--purple);"><span class="vf-num">30-150</span><span class="vf-lbl">call</span></div>
+                    <div class="vf-pct">chiudi 10</div>
+                    <div class="vf-step" style="width:25%;background:var(--orange);"><span class="vf-num">10</span><span class="vf-lbl">acquisti</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 6: CAMP ==================== -->
+<div class="slide" data-title="Camp">
+    <div class="slide-inner">
+        <div class="section-label">Fase 1: Experiences</div>
+        <h2>Green Hub Camp: talent acquisition</h2>
+        <div class="grid-2">
+            <div>
+                <p>Percorso formativo brandizzato per PMI che cercano risorse. L'azienda vede i candidati in azione prima di assumerli. 50+ aziende servite.</p>
+                <h3 class="mt-1">Come funziona</h3>
+                <ul class="fl">
+                    <li><strong>Fase 1:</strong> Call strategica, profilo cercato</li>
+                    <li><strong>Fase 2:</strong> Recruiting e filtro (questionario + colloquio)</li>
+                    <li><strong>Fase 3:</strong> Workshop brandizzato, valutazione, scelta</li>
+                </ul>
+                <h3 class="mt-2">Pricing</h3>
+                <table>
+                    <thead><tr><th>Pacchetto</th><th>Prezzo</th><th>Include</th></tr></thead>
+                    <tbody>
+                        <tr><td>Base</td><td class="hl">&euro;2.500</td><td>3 incontri, 3+ talenti</td></tr>
+                        <tr><td>Tecnico</td><td class="hl">&euro;3.500</td><td>3 inc. + Project Work, 5+</td></tr>
+                        <tr><td>Avanzato</td><td class="hl">&euro;5.000</td><td>5 inc. + Project Work, 8+</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3>Piano Camp 2026</h3>
+                <div class="card" style="margin-bottom:0.75rem;">
+                    <div class="tag">Q4 2026</div>
+                    <h4 style="margin-top:0.5rem;">Camp 1: Ottobre 2026</h4>
+                    <p>Prima edizione eseguita. Pacchetto Tecnico, &euro;3.500.</p>
+                </div>
+                <div class="card">
+                    <div class="tag orange">VENDUTO 2026 / EXEC Q1 2027</div>
+                    <h4 style="margin-top:0.5rem;">Camp 2: Inizio 2027</h4>
+                    <p>Venduto nel 2026, eseguito inizio 2027. Upgrade: aumento partecipanti o prezzo.</p>
+                </div>
+                <table class="mt-2">
+                    <thead><tr><th>Camp</th><th>Revenue</th></tr></thead>
+                    <tbody>
+                        <tr><td>Camp 1 (ottobre)</td><td class="hl">&euro;3.500</td></tr>
+                        <tr><td>Camp 2 (venduto 2026)</td><td class="hl">&euro;3.500-5.000</td></tr>
+                        <tr class="total"><td>Totale Camp</td><td>&euro;7.000-8.500</td></tr>
+                    </tbody>
+                </table>
+                <div class="card mt-2" style="border-color:var(--orange);">
+                    <h3 style="color:var(--orange);">&#9888; Numero limitato</h3>
+                    <p>Anche per il Camp: posti limitati visibili nel banner. Contatore automatico.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 7: REVENUE 100K ==================== -->
+<div class="slide" data-title="Revenue 100K">
+    <div class="slide-inner">
+        <div class="section-label">Fase 1: Target</div>
+        <h2>Revenue mix: obiettivo 100K</h2>
+        <div class="grid-2">
+            <div>
+                <div class="chart-wrap">
+                    <svg width="180" height="180" viewBox="0 0 180 180">
+                        <circle cx="90" cy="90" r="70" fill="none" stroke="#161b22" stroke-width="28"/>
+                        <circle cx="90" cy="90" r="70" fill="none" stroke="#89FF00" stroke-width="28" stroke-dasharray="224 440" stroke-dashoffset="0" transform="rotate(-90 90 90)"/>
+                        <circle cx="90" cy="90" r="70" fill="none" stroke="#74c0fc" stroke-width="28" stroke-dasharray="176 440" stroke-dashoffset="-224" transform="rotate(-90 90 90)"/>
+                        <circle cx="90" cy="90" r="70" fill="none" stroke="#ffa94d" stroke-width="28" stroke-dasharray="40 440" stroke-dashoffset="-400" transform="rotate(-90 90 90)"/>
+                        <text x="90" y="85" text-anchor="middle" font-family="Space Mono" font-size="22" font-weight="700" fill="#89FF00">~98K</text>
+                        <text x="90" y="102" text-anchor="middle" font-family="Inter" font-size="9" fill="#8b949e">revenue</text>
+                    </svg>
+                    <div class="legend">
+                        <div class="legend-item"><span class="legend-dot" style="background:#89FF00"></span>BizTrek (2x)<span class="legend-val">50K</span></div>
+                        <div class="legend-item"><span class="legend-dot" style="background:#74c0fc"></span>Subscriptions<span class="legend-val">40K</span></div>
+                        <div class="legend-item"><span class="legend-dot" style="background:#ffa94d"></span>Camp (2x)<span class="legend-val">~8K</span></div>
+                    </div>
+                </div>
+                <h3 class="mt-2">Confronto scenari</h3>
+                <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.3rem;">Base (~98K)</div>
+                <div class="stacked"><div class="stacked-seg" style="width:51%;background:var(--accent);">BizTrek 50K</div><div class="stacked-seg" style="width:41%;background:var(--blue);">Subs 40K</div><div class="stacked-seg" style="width:8%;background:var(--orange);">Camp</div></div>
+                <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.3rem;">Aggressivo (~108K)</div>
+                <div class="stacked"><div class="stacked-seg" style="width:69%;background:var(--accent);">BizTrek 75K</div><div class="stacked-seg" style="width:23%;background:var(--blue);">Subs 25K</div><div class="stacked-seg" style="width:8%;background:var(--orange);">Camp</div></div>
+            </div>
+            <div>
+                <h3>Waterfall revenue</h3>
+                <div class="wf">
+                    <div class="wf-col"><div class="wf-bar" style="height:63%;background:var(--accent);"><span class="wf-val" style="color:var(--accent);">25K</span></div><div class="wf-lbl">BizTrek 1</div></div>
+                    <div class="wf-col"><div class="wf-bar" style="height:63%;background:var(--accent);opacity:0.7;"><span class="wf-val" style="color:var(--accent);">25K</span></div><div class="wf-lbl">BizTrek 2</div></div>
+                    <div class="wf-col"><div class="wf-bar" style="height:9%;background:var(--orange);"><span class="wf-val" style="color:var(--orange);">3.5K</span></div><div class="wf-lbl">Camp 1</div></div>
+                    <div class="wf-col"><div class="wf-bar" style="height:12%;background:var(--orange);opacity:0.7;"><span class="wf-val" style="color:var(--orange);">4.5K</span></div><div class="wf-lbl">Camp 2</div></div>
+                    <div class="wf-col"><div class="wf-bar" style="height:35%;background:var(--blue);"><span class="wf-val" style="color:var(--blue);">14K</span></div><div class="wf-lbl">PLUS</div></div>
+                    <div class="wf-col"><div class="wf-bar" style="height:65%;background:var(--purple);"><span class="wf-val" style="color:var(--purple);">40K</span></div><div class="wf-lbl">PRO</div></div>
+                    <div class="wf-col"><div class="wf-bar" style="height:98%;background:linear-gradient(180deg,var(--accent),rgba(137,255,0,0.3));border:2px solid var(--accent);"><span class="wf-val" style="color:var(--accent);">~98K</span></div><div class="wf-lbl" style="color:var(--accent);font-weight:700;">TOT</div></div>
+                </div>
+                <h3 class="mt-1">Acquisizione canali</h3>
+                <div class="bar-row"><span class="bar-label">LinkedIn organico</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--accent);">1.000</div></div></div>
+                <div class="bar-row"><span class="bar-label">LinkedIn Ads</span><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--blue);">750</div></div></div>
+                <div class="bar-row"><span class="bar-label">Partnership</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--accent);">600</div></div></div>
+                <div class="bar-row"><span class="bar-label">SEO + Webinar</span><div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--accent);">500</div></div></div>
+                <div class="bar-row"><span class="bar-label">Referral + Community</span><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--accent);">400</div></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 8: TOOL (MEDIO TERMINE) ==================== -->
+<div class="slide" data-title="Tool">
+    <div class="slide-inner">
+        <div class="section-label">Fase 2: Medio termine / 2027</div>
+        <h2>Tool ESG per le aziende</h2>
+        <p class="wide">Obiettivo: dare alle PMI strumenti operativi per agire sulla compliance ESG. I tool sono il differenziatore dei piani PLUS e PRO. Ancora in fase di definizione, ma la direzione e' chiara.</p>
+        <div class="grid-3 mt-2">
+            <div class="card">
+                <h3>AI Copilot</h3>
+                <p>Assistente AI per domande ESG, suggerimenti personalizzati, supporto alla compliance. Versione base (PLUS) e avanzata (PRO).</p>
+                <div class="tag mt-1">PRIORITA' ALTA</div>
+            </div>
+            <div class="card">
+                <h3>Checklist compliance</h3>
+                <p>Percorsi guidati per CSRD, ESRS, tassonomia EU. Step-by-step con tracking del progresso. Genera dati sull'avanzamento.</p>
+                <div class="tag blue mt-1">PRIORITA' MEDIA</div>
+            </div>
+            <div class="card">
+                <h3>Matching bandi</h3>
+                <p>Algoritmo che suggerisce bandi EU/nazionali/regionali in base al profilo azienda. Feature PRO esclusiva.</p>
+                <div class="tag purple mt-1">DA ESPLORARE</div>
+            </div>
+        </div>
+        <div class="grid-2 mt-3">
+            <div class="card" style="border-color:var(--blue);">
+                <h3 style="color:var(--blue);">Obiettivo</h3>
+                <p class="wide">Entro H2 2027 avere almeno 1 tool operativo nella piattaforma che giustifichi l'attivazione dei piani PLUS e PRO a pagamento. Il tool deve generare valore percepito e raccogliere dati utili per la fase 3 (dati).</p>
+            </div>
+            <div class="card" style="border-color:var(--blue);">
+                <h3 style="color:var(--blue);">Decisioni da prendere</h3>
+                <ul class="fl">
+                    <li>Quale tool sviluppare per primo?</li>
+                    <li>Build vs buy vs partner?</li>
+                    <li>Quale LLM per il Copilot? (Claude, GPT, open-source)</li>
+                    <li>Fonte dati per i bandi? (EU, MISE, regioni)</li>
+                    <li>Budget e timeline di sviluppo</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 9: DATI - STRATEGIA ==================== -->
+<div class="slide" data-title="Dati: Strategia">
+    <div class="slide-inner">
+        <div class="section-label">Fase 3: Lungo termine / 2028-2029</div>
+        <h2>Il gioco dei dati ESG</h2>
+        <p class="wide">Nessuno ha dati ESG sulle PMI italiane. Green Hub li raccoglie di prima mano. La strategia: creare una licenza Data Commons per universita' ed enti, generare pubblicazioni e awareness, e da li' costruire il modello di business commerciale.</p>
+
+        <!-- FLOW DIAGRAM -->
+        <h3 class="mt-2">Il modello: Data Commons</h3>
+        <div class="flow-diagram">
+            <div class="flow-box">
+                <h4 style="color:var(--accent);">Raccolta dati</h4>
+                <p>Piattaforma, form, assessment, BizTrek, Camp</p>
+            </div>
+            <div class="flow-arrow">&#9654;</div>
+            <div class="flow-box">
+                <h4 style="color:var(--blue);">Normalizzazione</h4>
+                <p>Cleaning, ATECO, scoring, serie temporali</p>
+            </div>
+            <div class="flow-arrow">&#9654;</div>
+            <div class="flow-box" style="border-color:var(--purple);">
+                <h4 style="color:var(--purple);">Data Commons</h4>
+                <p>Licenza no-profit per universita' ed enti di ricerca</p>
+            </div>
+            <div class="flow-arrow">&#9654;</div>
+            <div class="flow-box">
+                <h4 style="color:var(--orange);">Pubblicazioni</h4>
+                <p>"Secondo UNISA e GreenHub..." su Repubblica, Sole24Ore</p>
+            </div>
+            <div class="flow-arrow">&#9654;</div>
+            <div class="flow-box" style="border-color:var(--accent);">
+                <h4 style="color:var(--accent);">Awareness</h4>
+                <p>Brand authority, lead gen, domanda di dati</p>
+            </div>
+            <div class="flow-arrow">&#9654;</div>
+            <div class="flow-box" style="border-color:var(--accent);background:var(--accent-dim);">
+                <h4 style="color:var(--accent);">Licenze commerciali</h4>
+                <p>Vendita a banche, assicurazioni, grandi aziende</p>
+            </div>
+        </div>
+
+        <div class="grid-2 mt-2">
+            <div>
+                <h3>Data Commons (no-profit)</h3>
+                <div class="card">
+                    <p class="wide" style="margin:0;">Licenza di utilizzo gratuita per universita', enti di ricerca e istituzioni. I dati aggregati e anonimizzati vengono messi a disposizione per:</p>
+                    <ul class="fl mt-1">
+                        <li>Ricerche accademiche (tesi, paper)</li>
+                        <li>Report istituzionali (regioni, ministeri)</li>
+                        <li>Pubblicazioni media (citate con fonte GH)</li>
+                        <li>Benchmark settoriali pubblici</li>
+                    </ul>
+                    <p class="wide mt-1" style="color:var(--accent);font-weight:600;margin:0;">Ogni pubblicazione genera awareness e valida il dato.</p>
+                </div>
+            </div>
+            <div>
+                <h3>Licenze commerciali (a scopo di lucro)</h3>
+                <div class="card">
+                    <p class="wide" style="margin:0;">Per chi usa i dati a scopo commerciale: licenza annuale o pay-per-query.</p>
+                    <table>
+                        <thead><tr><th>Buyer</th><th>Uso</th><th>Pricing</th></tr></thead>
+                        <tbody>
+                            <tr><td>Banche</td><td>Credit scoring ESG</td><td class="hl">10-50K/anno</td></tr>
+                            <tr><td>Assicurazioni</td><td>Risk assessment</td><td class="hl">10-50K/anno</td></tr>
+                            <tr><td>Grandi aziende</td><td>ESG supply chain</td><td class="hl">5-20K/anno</td></tr>
+                            <tr><td>Consulenti</td><td>Tool di lavoro</td><td class="hl">1-5K/anno</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 10: DATI - PIPELINE ==================== -->
+<div class="slide" data-title="Dati: Pipeline">
+    <div class="slide-inner">
+        <div class="section-label">Fase 3: Dettaglio tecnico</div>
+        <h2>Pipeline dati e normalizzazione</h2>
+        <div class="grid-2">
+            <div>
+                <h3>Dati raccolti</h3>
+                <div class="card" style="margin-bottom:0.75rem;">
+                    <h4 style="color:var(--accent);">Da piattaforma</h4>
+                    <ul class="fl">
+                        <li>Settore ATECO, dimensione, regione, fatturato</li>
+                        <li>ESG Score e come evolve nel tempo</li>
+                        <li>Azioni implementate (e quali no)</li>
+                        <li>Contenuti consumati, corsi completati</li>
+                        <li>Domande all'AI Copilot (pattern bisogni)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4 style="color:var(--blue);">Da BizTrek + Camp</h4>
+                    <ul class="fl">
+                        <li>Opportunita' EU cercate per settore</li>
+                        <li>Gap preparazione vs requisiti bandi</li>
+                        <li>Domanda competenze per settore/regione</li>
+                        <li>Tempo medio inserimento risorse</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <h3>Normalizzazione</h3>
+                <div class="code-block">
+                    <span class="c-cmt">// 1. Classificazione settoriale</span><br>
+                    <span class="c-kw">Input:</span> "facciamo bulloni"<br>
+                    <span class="c-kw">Output:</span> <span class="c-str">ATECO 25.93.1</span><br>
+                    <span class="c-kw">Come:</span> LLM + mapping ATECO<br><br>
+                    <span class="c-cmt">// 2. ESG Score normalizzato</span><br>
+                    <span class="c-kw">Input:</span> mix scale 1-5, si/no<br>
+                    <span class="c-kw">Output:</span> <span class="c-num">score 0-100</span> su 3 assi (E,S,G)<br>
+                    <span class="c-kw">Come:</span> pesi per domanda, min-max<br><br>
+                    <span class="c-cmt">// 3. Encoding motivazioni</span><br>
+                    <span class="c-kw">Input:</span> "i clienti ce lo chiedono"<br>
+                    <span class="c-kw">Output:</span> <span class="c-str">[supply_chain_pressure]</span><br>
+                    <span class="c-kw">Come:</span> topic modeling / LLM<br><br>
+                    <span class="c-cmt">// 4. Serie temporali</span><br>
+                    <span class="c-kw">Input:</span> score mese 1, 2, ..., N<br>
+                    <span class="c-kw">Output:</span> <span class="c-num">trend + previsione</span><br>
+                    <span class="c-kw">Come:</span> regressione / ARIMA
+                </div>
+                <h3 class="mt-1">Prerequisiti</h3>
+                <div class="grid-2" style="gap:0.5rem;">
+                    <div class="card" style="padding:0.75rem;text-align:center;"><div class="stat-num" style="font-size:1.2rem;">1K+</div><div class="stat-label">statistiche base</div></div>
+                    <div class="card" style="padding:0.75rem;text-align:center;"><div class="stat-num" style="font-size:1.2rem;">2K+</div><div class="stat-label">modelli predittivi</div></div>
+                    <div class="card" style="padding:0.75rem;text-align:center;"><div class="stat-num" style="font-size:1.2rem;">5K+</div><div class="stat-label">API commerciali</div></div>
+                    <div class="card" style="padding:0.75rem;text-align:center;"><div class="stat-num" style="font-size:1.2rem;">1</div><div class="stat-label">data engineer</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 11: TASK ATTILIO ==================== -->
+<div class="slide" data-title="Task: Attilio">
+    <div class="slide-inner">
+        <div class="section-label">Operativo</div>
+        <h2>Task: Attilio</h2>
+        <div class="grid-2">
+            <div>
+                <h3>BizTrek: definizione e logistica</h3>
+                <div class="task-item prio-high">
+                    Definire BizTrek: formato completo, agenda, proposta di valore, deliverable per i partecipanti
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-high">
+                    Chiamare ed essere sicuro di dove andare a Bruxelles e con chi parlare (istituzioni EU, aziende, stakeholder)
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Capire se ci sono esperti che vogliono fare webinar (preparatorio e/o post-viaggio)
+                    <span class="task-tag">&#9679; priorita' media</span>
+                </div>
+            </div>
+            <div>
+                <h3>Contenuti e asset</h3>
+                <div class="task-item prio-high">
+                    Creare slide con tutte le info BizTrek (proposta, agenda, logistics, costi, cosa include)
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Dalle slide creare i post LinkedIn (min. 3-4 post dedicati BizTrek)
+                    <span class="task-tag">&#9679; da slide</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Dalle slide creare asset per la piattaforma: banner che porta alla pagina BizTrek, copy per la landing
+                    <span class="task-tag">&#9679; da slide</span>
+                </div>
+                <div class="task-item prio-low">
+                    Preparare pitch deck per eventuali partner/sponsor dell'edizione Brussels
+                    <span class="task-tag">&#9679; nice to have</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 12: TASK PIETRO ==================== -->
+<div class="slide" data-title="Task: Pietro">
+    <div class="slide-inner">
+        <div class="section-label">Operativo</div>
+        <h2>Task: Pietro</h2>
+        <div class="grid-2">
+            <div>
+                <h3>Piattaforma: Experiences</h3>
+                <div class="task-item prio-high">
+                    Integrare sezione Esperienze nella piattaforma (Camp e BizTrek): pagine dedicate con info, pricing, CTA
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-high">
+                    Creare banner nel carosello della home page per Camp e BizTrek
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-high">
+                    Nel banner: scritta "POSTI LIMITATI" con contatore automatico dei ticket rimanenti (si aggiorna man mano che vengono venduti)
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Stesso contatore anche nella pagina dedicata Camp e BizTrek
+                    <span class="task-tag">&#9679; priorita' media</span>
+                </div>
+            </div>
+            <div>
+                <h3>Piattaforma: Abbonamenti</h3>
+                <div class="task-item prio-high">
+                    Creare sezione abbonamenti con i 3 piani (FREE / PLUS / PRO)
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-high">
+                    Primi 6 mesi: solo FREE acquistabile. PLUS e PRO visibili ma non acquistabili ("Coming Soon")
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-high">
+                    FREE in beta: ha tutte le feature PRO. Differenziare i piani visivamente ma scrivere che e' in beta e non tutti i contenuti sono disponibili
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Acquisto ticket Camp e BizTrek in base al tipo di abbonamento (FREE = prezzo scontato, PRO = sconto massimo)
+                    <span class="task-tag">&#9679; priorita' media</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 13: TASK LORENZO + ALTRI ==================== -->
+<div class="slide" data-title="Task: Lorenzo+">
+    <div class="slide-inner">
+        <div class="section-label">Operativo</div>
+        <h2>Task: Lorenzo + Team</h2>
+        <div class="grid-2">
+            <div>
+                <h3>Lorenzo: Marketing e contenuti</h3>
+                <div class="task-item prio-high">
+                    Preparare comunicazione ESG ON (22 aprile): post LinkedIn, email, countdown
+                    <span class="task-tag">&#9679; priorita' alta / urgente</span>
+                </div>
+                <div class="task-item prio-high">
+                    Piano editoriale post-lancio: 3 post/settimana LinkedIn (Camp, BizTrek, piattaforma)
+                    <span class="task-tag">&#9679; priorita' alta</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Creare contenuti infotainment per la piattaforma (primi 10 articoli/video ESG)
+                    <span class="task-tag">&#9679; content</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Attivare referral con Tekla e Re Energy (repost + commenti obbligatori)
+                    <span class="task-tag">&#9679; partnership</span>
+                </div>
+                <div class="task-item prio-low">
+                    Pianificare primo webinar gratuito (maggio/giugno 2026)
+                    <span class="task-tag">&#9679; lead gen</span>
+                </div>
+            </div>
+            <div>
+                <h3>Team: Decisioni strategiche</h3>
+                <div class="task-item prio-high">
+                    Validare pricing BizTrek e Camp con i primi contatti
+                    <span class="task-tag">&#9679; gianpaolo</span>
+                </div>
+                <div class="task-item prio-high">
+                    Definire feature list definitiva FREE vs PLUS vs PRO
+                    <span class="task-tag">&#9679; team</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Definire campi form di iscrizione (pensando alla raccolta dati per i modelli)
+                    <span class="task-tag">&#9679; team + pietro</span>
+                </div>
+                <div class="task-item prio-mid">
+                    Identificare primo data engineer / ML engineer (anche part-time o consulente)
+                    <span class="task-tag">&#9679; lungo termine</span>
+                </div>
+                <div class="task-item prio-low">
+                    Setup analytics e tracking uso piattaforma (eventi, funnel, retention)
+                    <span class="task-tag">&#9679; pietro</span>
+                </div>
+                <div class="task-item prio-low">
+                    Preparare materiali ESG ON: presentazione, demo piattaforma, brochure digitale
+                    <span class="task-tag">&#9679; team / 22 aprile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div><!-- /slides-container -->
+
+<!-- NAV HINT -->
+<div class="nav-hint"><kbd>&#8592;</kbd> <kbd>&#8594;</kbd> per navigare</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const navLinksContainer = document.getElementById('navLinks');
+    const slideCounter = document.getElementById('slideCounter');
+    let currentSlide = 0;
+
+    // Build nav buttons
+    slides.forEach((slide, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = slide.dataset.title;
+        btn.addEventListener('click', () => goToSlide(i));
+        navLinksContainer.appendChild(btn);
+    });
+
+    function goToSlide(index) {
+        slides[currentSlide].classList.remove('active');
+        navLinksContainer.children[currentSlide].classList.remove('active');
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+        navLinksContainer.children[currentSlide].classList.add('active');
+        slideCounter.textContent = (currentSlide + 1) + ' / ' + slides.length;
+        // scroll to top of slide content
+        slides[currentSlide].scrollTop = 0;
+    }
+
+    // Init
+    goToSlide(0);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+    });
+</script>
+
+</body>
+</html>

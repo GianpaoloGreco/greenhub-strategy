@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESG ON / Registrazione</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #020710;
+  --accent: #89FF00;
+  --text: #f0f6fc;
+  --text-muted: #8b949e;
+  --card-bg: #0d1117;
+  --border: #21262d;
+  --error: #f85149;
+  --white: #ffffff;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: 'Space Mono', monospace; }
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+}
+
+.progress-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  max-width: 240px;
+  margin: 0 auto;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid var(--border);
+  transition: all 0.4s ease;
+  flex-shrink: 0;
+}
+
+.progress-dot.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(137, 255, 0, 0.4);
+}
+
+.progress-dot.done {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.progress-line {
+  height: 2px;
+  flex: 1;
+  background: var(--border);
+  transition: background 0.4s ease;
+}
+
+.progress-line.done {
+  background: var(--accent);
+}
+
+/* Container */
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 80px 20px 40px;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Steps */
+.step {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.step.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo */
+.logo-mark {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.event-badge {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 32px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  width: 100%;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: #9eff33;
+  box-shadow: 0 0 20px rgba(137, 255, 0, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover {
+  background: var(--accent);
+  box-shadow: none;
+}
+
+.btn-back {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  padding: 12px 24px;
+}
+
+.btn-back:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.btn-group .btn-back {
+  width: auto;
+  flex-shrink: 0;
+}
+
+.btn-group .btn-primary {
+  flex: 1;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 13px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(137, 255, 0, 0.1);
+}
+
+.form-input::placeholder {
+  color: #484f58;
+}
+
+.step-title {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.step-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 28px;
+}
+
+/* Checkbox */
+.checkbox-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.checkbox-wrap input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-top: 1px;
+}
+
+.checkbox-wrap input:checked + .checkbox-custom {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.checkbox-wrap input:checked + .checkbox-custom::after {
+  content: '';
+  width: 6px;
+  height: 10px;
+  border: solid var(--bg);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+.checkbox-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.checkbox-label a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Questions */
+.question-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 18px;
+  transition: border-color 0.3s ease;
+}
+
+.question-card:hover {
+  border-color: rgba(137, 255, 0, 0.2);
+}
+
+.q-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.q-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+
+/* Select / Dropdown */
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%238b949e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.form-select:focus {
+  border-color: var(--accent);
+}
+
+.form-select option {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Radio buttons */
+.radio-group {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-option {
+  flex: 1;
+  position: relative;
+}
+
+.radio-option input {
+  display: none;
+}
+
+.radio-btn {
+  display: block;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.radio-option input:checked + .radio-btn {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(137, 255, 0, 0.06);
+}
+
+.radio-btn:hover {
+  border-color: var(--text-muted);
+}
+
+/* Tag pills */
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag-pill {
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  white-space: nowrap;
+}
+
+.tag-pill:hover {
+  border-color: var(--text-muted);
+}
+
+.tag-pill.selected {
+  border-color: var(--accent);
+  color: var(--bg);
+  background: var(--accent);
+  font-weight: 600;
+}
+
+.tag-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+.tag-hint.warning {
+  color: var(--accent);
+}
+
+/* Confirmation */
+.confirm-wrap {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.check-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(137, 255, 0, 0.1);
+  border: 3px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 28px;
+  animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.check-icon {
+  width: 36px;
+  height: 36px;
+  stroke: var(--accent);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawCheck 0.6s 0.3s forwards ease;
+}
+
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+.confirm-title {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+
+.confirm-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.email-list {
+  text-align: left;
+  margin: 0 auto;
+  max-width: 380px;
+}
+
+.email-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.email-item:last-child {
+  border-bottom: none;
+}
+
+.email-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.email-item-text {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.confirm-spam {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 28px;
+  opacity: 0.7;
+}
+
+/* Email previews */
+.email-preview-section {
+  margin-bottom: 20px;
+}
+
+.dev-badge {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+
+.email-card {
+  background: var(--white);
+  color: #1a1a1a;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.email-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.email-meta {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.email-subject {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.email-body {
+  padding: 22px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.email-body p {
+  margin-bottom: 14px;
+}
+
+.email-body .greeting {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.email-body .detail-line {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+
+.email-body .detail-icon {
+  flex-shrink: 0;
+}
+
+.email-cta-btn {
+  display: inline-block;
+  background: #020710;
+  color: #89FF00;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.email-footer {
+  padding: 16px 22px;
+  border-top: 1px solid #e5e5e5;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.email-body .highlight {
+  color: #020710;
+  font-weight: 600;
+}
+
+.email-body ul {
+  padding-left: 18px;
+  margin-bottom: 14px;
+}
+
+.email-body li {
+  margin-bottom: 6px;
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar">
+  <div class="progress-inner">
+    <div class="progress-dot active" data-step="1"></div>
+    <div class="progress-line" data-line="1"></div>
+    <div class="progress-dot" data-step="2"></div>
+    <div class="progress-line" data-line="2"></div>
+    <div class="progress-dot" data-step="3"></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- STEP 1: Generalita' -->
+  <div class="step active" id="step1">
+    <div class="logo-mark">GREEN HUB_</div>
+    <div class="event-badge">ESG ON / 22 Aprile 2026</div>
+    <h2 class="step-title">Registrati</h2>
+    <p class="step-subtitle">Iscriviti all'evento e accedi alla piattaforma Green Hub</p>
+
+    <form id="formStep1" onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label" for="nome">Nome</label>
+        <input class="form-input" type="text" id="nome" placeholder="Il tuo nome" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="cognome">Cognome</label>
+        <input class="form-input" type="text" id="cognome" placeholder="Il tuo cognome" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="ruolo">Ruolo in azienda</label>
+        <input class="form-input" type="text" id="ruolo" placeholder="es. Sustainability Manager" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="azienda">Azienda</label>
+        <input class="form-input" type="text" id="azienda" placeholder="Nome dell'azienda" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email aziendale</label>
+        <input class="form-input" type="email" id="email" placeholder="nome@azienda.com" required>
+      </div>
+
+      <label class="checkbox-wrap" id="privacyWrap">
+        <input type="checkbox" id="privacy" onchange="checkFormValidity()">
+        <span class="checkbox-custom"></span>
+        <span class="checkbox-label">
+          Accetto la <a href="#" onclick="event.stopPropagation()">normativa sulla privacy</a> e il trattamento dei dati personali
+        </span>
+      </label>
+    </form>
+
+    <div style="margin-top: 32px;">
+      <button class="btn btn-primary" id="btnStep1" disabled onclick="goTo(2)">Continua</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Domande -->
+  <div class="step" id="step2">
+    <h2 class="step-title">Qualche domanda</h2>
+    <p class="step-subtitle">Aiutaci a conoscerti meglio</p>
+
+    <!-- Domanda 1: Come hai conosciuto -->
+    <div class="question-card">
+      <div class="q-number">Domanda 1</div>
+      <div class="q-text">Come hai conosciuto ESG ON?</div>
+      <select class="form-select" id="q1">
+        <option value="" disabled selected>Seleziona un'opzione</option>
+        <option>LinkedIn</option>
+        <option>Passaparola</option>
+        <option>Newsletter</option>
+        <option>Evento precedente</option>
+        <option>Partner / Associazione</option>
+        <option>Altro</option>
+      </select>
+    </div>
+
+    <!-- Domanda 2: Priorita' ESG (era Q4) -->
+    <div class="question-card">
+      <div class="q-number">Domanda 2</div>
+      <div class="q-text">Quali sono le tue priorita' ESG?</div>
+      <div class="tag-container" id="tagContainer">
+        <span class="tag-pill" onclick="toggleTag(this)">Bandi e finanziamenti</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Compliance normativa</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Reporting ESG</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Formazione team</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Supply chain sostenibile</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Efficienza energetica</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Employer branding</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Carbon footprint</span>
+        <span class="tag-pill" onclick="toggleTag(this)">Economia circolare</span>
+      </div>
+      <div class="tag-hint" id="tagHint">Seleziona fino a 3 opzioni</div>
+    </div>
+
+    <!-- Domanda 3: Talenti -->
+    <div class="question-card">
+      <div class="q-number">Domanda 3</div>
+      <div class="q-text">Sei interessato a trovare talenti formati secondo le tue esigenze attraverso un percorso di collaborazione con Green Hub?</div>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="q3" value="si">
+          <span class="radio-btn">Si, vorrei saperne di piu'</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="no">
+          <span class="radio-btn">Non al momento</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Domanda 4: BizTrek -->
+    <div class="question-card">
+      <div class="q-number">Domanda 4</div>
+      <div class="q-text">Ti piacerebbe scoprire BizTrek? Un viaggio a Bruxelles con Green Hub per parlare direttamente con le persone che contano, prepararti insieme a noi e avere un canale diretto con le istituzioni europee.</div>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="q4" value="si">
+          <span class="radio-btn">Si, voglio saperne di piu'</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="no">
+          <span class="radio-btn">Non al momento</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="goTo(1)">Indietro</button>
+      <button class="btn btn-primary" onclick="goTo(3)">Completa registrazione</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Conferma -->
+  <div class="step" id="step3">
+    <div class="confirm-wrap">
+      <div class="check-circle">
+        <svg class="check-icon" viewBox="0 0 24 24">
+          <polyline points="4 12 10 18 20 6"></polyline>
+        </svg>
+      </div>
+      <h2 class="confirm-title">Registrazione completata!</h2>
+      <p class="confirm-text">Ti abbiamo inviato due email:</p>
+
+      <div class="email-list">
+        <div class="email-item">
+          <svg class="email-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 7l-10 6L2 7"/>
+          </svg>
+          <span class="email-item-text">Conferma iscrizione evento <strong>ESG ON</strong></span>
+        </div>
+        <div class="email-item">
+          <svg class="email-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 7l-10 6L2 7"/>
+          </svg>
+          <span class="email-item-text">Benvenuto nella piattaforma <strong>Green Hub</strong></span>
+        </div>
+      </div>
+
+      <p class="confirm-spam">Controlla la tua casella di posta (anche la cartella spam)</p>
+
+      <div style="margin-top: 32px;">
+        <button class="btn btn-primary" onclick="goTo(4)" style="background: transparent; color: var(--accent); border: 1px solid var(--accent);">Anteprima email (per dev)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Email previews (dev) -->
+  <div class="step" id="step4">
+    <span class="dev-badge">Anteprima per sviluppatori</span>
+    <h2 class="step-title">Testi email</h2>
+    <p class="step-subtitle">Contenuti delle due email da implementare</p>
+
+    <!-- Email 1 -->
+    <div class="email-preview-section">
+      <div class="email-card">
+        <div class="email-header">
+          <div class="email-meta">Da: Green Hub &lt;noreply@greenhub.com&gt;</div>
+          <div class="email-meta">A: {{email_utente}}</div>
+          <div class="email-subject">Ci sei! La tua iscrizione a ESG ON e' confermata</div>
+        </div>
+        <div class="email-body">
+          <p class="greeting">Ciao {{nome}},</p>
+          <p>la tua iscrizione all'evento <strong>ESG ON</strong> e' confermata. Ti aspettiamo.</p>
+
+          <div class="detail-line"><span class="detail-icon">&#128197;</span> 22 Aprile 2026</div>
+          <div class="detail-line"><span class="detail-icon">&#128205;</span> {{luogo_evento}}</div>
+          <div class="detail-line"><span class="detail-icon">&#128336;</span> {{orario_evento}}</div>
+
+          <p style="margin-top:18px;">Cosa aspettarsi:</p>
+          <ul>
+            <li>Talk e panel su tematiche ESG concrete</li>
+            <li>Networking con professionisti della sostenibilita'</li>
+            <li>Anteprima della piattaforma Green Hub</li>
+          </ul>
+
+          <a href="#" class="email-cta-btn">Aggiungi al calendario</a>
+        </div>
+        <div class="email-footer">
+          Green Hub / greenhub.com<br>
+          Se non hai richiesto questa iscrizione, puoi ignorare questa email.
+        </div>
+      </div>
+    </div>
+
+    <!-- Email 2 -->
+    <div class="email-preview-section">
+      <div class="email-card">
+        <div class="email-header">
+          <div class="email-meta">Da: Green Hub &lt;noreply@greenhub.com&gt;</div>
+          <div class="email-meta">A: {{email_utente}}</div>
+          <div class="email-subject">Benvenuto in Green Hub / Sei tra i primi</div>
+        </div>
+        <div class="email-body">
+          <p class="greeting">Ciao {{nome}},</p>
+          <p>Hai appena fatto qualcosa che la maggior parte delle aziende fara' tra sei mesi: entrare in Green Hub.</p>
+          <p>Sei tra i primi ad avere un account sulla piattaforma. Non e' ancora tutto live: la piattaforma sara' operativa a <span class="highlight">maggio 2026</span>. Ma il tuo posto e' gia' riservato.</p>
+          <p>Quando apriremo le porte, sarai tra i primi a ricevere la notifica e ad accedere a tutti gli strumenti ESG che stiamo costruendo.</p>
+          <p>Nel frattempo, seguici su <a href="#" style="color: #020710; font-weight:600;">LinkedIn</a> per restare aggiornato.</p>
+          <p>A presto,<br><span class="highlight">Il team Green Hub</span></p>
+        </div>
+        <div class="email-footer">
+          Green Hub / greenhub.com<br>
+          Se non hai richiesto questa iscrizione, puoi ignorare questa email.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <button class="btn btn-back" onclick="goTo(3)" style="width: 100%;">Torna alla conferma</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentStep = 1;
+
+function goTo(step) {
+  // Validation for step 1 (form)
+  if (currentStep === 1 && step === 2) {
+    const fields = ['nome', 'cognome', 'ruolo', 'azienda', 'email'];
+    for (const id of fields) {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.focus();
+        el.style.borderColor = 'var(--error)';
+        setTimeout(() => el.style.borderColor = '', 2000);
+        return;
+      }
+    }
+    if (!document.getElementById('privacy').checked) return;
+  }
+
+  currentStep = step;
+
+  // Hide all steps, show target
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + step).classList.add('active');
+
+  // Update progress bar (3 dots for steps 1-3, step 4 reuses dot 3)
+  const displayStep = Math.min(step, 3);
+  document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+    const dotStep = i + 1;
+    dot.classList.remove('active', 'done');
+    if (dotStep < displayStep) dot.classList.add('done');
+    if (dotStep === displayStep) dot.classList.add('active');
+  });
+  document.querySelectorAll('.progress-line').forEach((line, i) => {
+    const lineStep = i + 1;
+    line.classList.toggle('done', lineStep < displayStep);
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Form validation
+function checkFormValidity() {
+  const fields = ['nome', 'cognome', 'ruolo', 'azienda', 'email'];
+  const allFilled = fields.every(id => document.getElementById(id).value.trim() !== '');
+  const privacyChecked = document.getElementById('privacy').checked;
+  document.getElementById('btnStep1').disabled = !(allFilled && privacyChecked);
+}
+
+document.querySelectorAll('#formStep1 .form-input').forEach(input => {
+  input.addEventListener('input', checkFormValidity);
+});
+
+// Tag selection (max 3)
+function toggleTag(el) {
+  const selected = document.querySelectorAll('.tag-pill.selected');
+  const hint = document.getElementById('tagHint');
+
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    const count = document.querySelectorAll('.tag-pill.selected').length;
+    hint.textContent = count > 0
+      ? count + ' di 3 selezionate'
+      : 'Seleziona fino a 3 opzioni';
+    hint.classList.remove('warning');
+  } else {
+    if (selected.length >= 3) {
+      hint.textContent = 'Massimo 3 opzioni selezionabili';
+      hint.classList.add('warning');
+      return;
+    }
+    el.classList.add('selected');
+    const count = document.querySelectorAll('.tag-pill.selected').length;
+    hint.textContent = count + ' di 3 selezionate';
+    hint.classList.remove('warning');
+  }
+}
+</script>
+</body>
+</html>
